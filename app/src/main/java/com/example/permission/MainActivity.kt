@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    var num=1
+    var num=""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,7 +30,10 @@ class MainActivity : AppCompatActivity() {
         cursor.use {
             if (it?.count == 0) {
 
-                num=0
+                num="0"
+            }else{
+
+                num="1"
             }
 
             it?.moveToLast()
@@ -78,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         call.setOnClickListener {
             Log.d("amroz",num.toString())
 
-                if (num==0){
+                if (num=="0"){
 
                             etName.visibility=View.VISIBLE
                             etNumber.visibility=View.VISIBLE
