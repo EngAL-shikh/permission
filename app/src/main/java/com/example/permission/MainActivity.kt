@@ -8,18 +8,40 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-   var check=0
 
+    var num=1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val contactUri = ContactsContract.Contacts.CONTENT_URI
+        val querFields = arrayOf(ContactsContract.Contacts.DISPLAY_NAME)
+        val cursor = contentResolver.query(contactUri, querFields, null, null, null)
+        cursor.use {
+            if (it?.count == 0) {
+
+                num=0
+            }
+
+            it?.moveToLast()
+            val name = it?.getString(0)
+
+
+        }
+
+
+
+
 
 
 
@@ -54,18 +76,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         call.setOnClickListener {
-            if (check==0){
-                            getpermission()
+            Log.d("amroz",num.toString())
+
+                if (num==0){
+
                             etName.visibility=View.VISIBLE
                             etNumber.visibility=View.VISIBLE
                             savecontact.visibility=View.VISIBLE
-                        }else{
+
+            }else{
 
                var num= etNumber.text.toString()
                 val webIntent = Intent().apply {
                     action =Intent.ACTION_DIAL
                     data = Uri.parse("tel:$num")
+
                 }
+
+
                 if (webIntent.resolveActivity(packageManager) != null) {
                     startActivity(webIntent)
                 }
@@ -159,6 +187,7 @@ class MainActivity : AppCompatActivity() {
             savecontact.visibility=View.GONE
 
     }
+
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
@@ -167,19 +196,30 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
-                check(1)
+
                 Toast.makeText(this, "Added Contact", Toast.LENGTH_SHORT).show()
             }
             if (resultCode == Activity.RESULT_CANCELED) {
-                check(1)
-                Toast.makeText(this, "Cancelled Added Contact", Toast.LENGTH_SHORT).show()
+
+
             }
         }
     }
 
 
-    fun check(item:Int){
 
-       check=item
+    fun check() {
+
+
+
+
+
+
+
+
+
+        }
+
+
     }
-}
+
